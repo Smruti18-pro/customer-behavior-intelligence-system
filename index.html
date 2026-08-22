@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Customer360 - A unified Customer Behavior Intelligence Dashboard combining shopping habits, loyalty, and session data.">
+    <title>Customer360 | Customer Behavior Intelligence System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <h2>Loading Customer360</h2>
+            <p>Unifying customer data...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <span class="logo-icon">⊡</span>
+                <div>
+                    <h1>Customer360</h1>
+                    <p class="subtitle">Customer Behavior Intelligence System</p>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-meta">
+                <span class="badge badge-live">● Live</span>
+                <span class="header-date" id="header-date"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Filter Bar -->
+    <section class="filter-bar">
+        <div class="filter-group">
+            <label for="filter-loyalty">Loyalty Tier</label>
+            <select id="filter-loyalty">
+                <option value="All">All Tiers</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="filter-channel">Channel</label>
+            <select id="filter-channel">
+                <option value="All">All Channels</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="filter-gender">Gender</label>
+            <select id="filter-gender">
+                <option value="All">All</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="filter-state">State</label>
+            <select id="filter-state">
+                <option value="All">All States</option>
+            </select>
+        </div>
+        <button class="btn-reset" id="btn-reset">
+            ↺ Reset Filters
+        </button>
+    </section>
+
+    <!-- KPI Strip -->
+    <section class="kpi-strip">
+        <div class="kpi-card" style="--delay: 0.1s">
+            <div class="kpi-icon" style="--accent: #818cf8">👥</div>
+            <div class="kpi-info">
+                <span class="kpi-value" id="kpi-customers">—</span>
+                <span class="kpi-label">Total Customers</span>
+            </div>
+        </div>
+        <div class="kpi-card" style="--delay: 0.2s">
+            <div class="kpi-icon" style="--accent: #34d399">💰</div>
+            <div class="kpi-info">
+                <span class="kpi-value" id="kpi-revenue">—</span>
+                <span class="kpi-label">Total Revenue</span>
+            </div>
+        </div>
+        <div class="kpi-card" style="--delay: 0.3s">
+            <div class="kpi-icon" style="--accent: #fbbf24">🧾</div>
+            <div class="kpi-info">
+                <span class="kpi-value" id="kpi-transactions">—</span>
+                <span class="kpi-label">Transactions</span>
+            </div>
+        </div>
+        <div class="kpi-card" style="--delay: 0.4s">
+            <div class="kpi-icon" style="--accent: #f472b6">📊</div>
+            <div class="kpi-info">
+                <span class="kpi-value" id="kpi-avg-order">—</span>
+                <span class="kpi-label">Avg Order Value</span>
+            </div>
+        </div>
+        <div class="kpi-card" style="--delay: 0.5s">
+            <div class="kpi-icon" style="--accent: #38bdf8">🌐</div>
+            <div class="kpi-info">
+                <span class="kpi-value" id="kpi-sessions">—</span>
+                <span class="kpi-label">Total Sessions</span>
+            </div>
+        </div>
+        <div class="kpi-card" style="--delay: 0.6s">
+            <div class="kpi-icon" style="--accent: #a78bfa">⭐</div>
+            <div class="kpi-info">
+                <span class="kpi-value" id="kpi-conversion">—</span>
+                <span class="kpi-label">Conversion Rate</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts Grid -->
+    <main class="dashboard-grid">
+        <!-- Row 1 -->
+        <div class="chart-card card-wide" id="card-revenue-trend">
+            <div class="card-header">
+                <h2>Revenue Trend</h2>
+                <span class="card-badge">Monthly</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart-revenue-trend"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card" id="card-loyalty-dist">
+            <div class="card-header">
+                <h2>Loyalty Tier Distribution</h2>
+                <span class="card-badge">Customers</span>
+            </div>
+            <div class="chart-container chart-container-doughnut">
+                <canvas id="chart-loyalty-dist"></canvas>
+            </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="chart-card" id="card-category">
+            <div class="card-header">
+                <h2>Revenue by Category</h2>
+                <span class="card-badge">Products</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart-category"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card" id="card-channel">
+            <div class="card-header">
+                <h2>Channel Performance</h2>
+                <span class="card-badge">Sales</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart-channel"></canvas>
+            </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="chart-card" id="card-device">
+            <div class="card-header">
+                <h2>Session by Device</h2>
+                <span class="card-badge">Digital</span>
+            </div>
+            <div class="chart-container chart-container-doughnut">
+                <canvas id="chart-device"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card" id="card-age">
+            <div class="card-header">
+                <h2>Customer Age Distribution</h2>
+                <span class="card-badge">Demographics</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart-age"></canvas>
+            </div>
+        </div>
+
+        <!-- Row 4 - Full Width -->
+        <div class="chart-card card-full" id="card-top-customers">
+            <div class="card-header">
+                <h2>Customer 360° View</h2>
+                <div class="table-controls">
+                    <input type="text" id="customer-search" placeholder="Search customers..." class="search-input">
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="customer-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="name">Customer Name ↕</th>
+                            <th data-sort="city">City ↕</th>
+                            <th data-sort="state">State ↕</th>
+                            <th data-sort="loyalty">Loyalty Tier ↕</th>
+                            <th data-sort="channel">Pref. Channel ↕</th>
+                            <th data-sort="spent">Total Spent ↕</th>
+                            <th data-sort="txns">Transactions ↕</th>
+                            <th data-sort="sessions">Sessions ↕</th>
+                            <th data-sort="points">Points Balance ↕</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customer-table-body">
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-pagination">
+                <button id="prev-page" class="btn-page">← Previous</button>
+                <span id="page-info" class="page-info">Page 1</span>
+                <button id="next-page" class="btn-page">Next →</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Customer360 Intelligence System · Stakeholders: Marketing Manager & Customer Support Team</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
